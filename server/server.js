@@ -16,10 +16,25 @@ const db = mysql.createConnection({
 
 app.listen(8081, () => {
   console.log("Menjelaskan");
+  const date = new Date();
+  console.log(date);
 });
 
 app.get("/", (re, res) => {
   return res.json("Dari server iki rekkkk");
+});
+
+app.post("/login", (req, res) => {
+  const sql = "SELECT * FROM users WHERE username=? AND password=?";
+
+  db.query(sql, [req.body.username, req.body.password], (err, data) => {
+    if (err) return res.json("Error");
+    if (data.length > 0) {
+      return res.json("Login Successfully!");
+    } else {
+      return res.json("no record");
+    }
+  });
 });
 
 app.get("/users", (req, res) => {
